@@ -6,12 +6,10 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Capitalize from "@/utils/Capitalize";
 
 const signUpSchema = z.object({
   username: z
@@ -43,15 +41,14 @@ const SignUpForm = () => {
   };
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="w-[350px] p-2" onSubmit={form.handleSubmit(onSubmit)}>
         {Object.keys(signUpSchema.shape).map((fieldName, index) => (
           <FormField
             key={index}
             control={form.control}
-            name={fieldName}
+            name={fieldName as keyof SignUpFormData}
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>{Capitalize(fieldName)}</FormLabel>
+              <FormItem className="py-1">
                 <FormControl>
                   <Input placeholder={`Enter ${fieldName}`} {...field} />
                 </FormControl>
@@ -61,11 +58,11 @@ const SignUpForm = () => {
           ></FormField>
         ))}
         <Button
-          className="w-full mt-3 bg-blue-500 hover:bg-blue-400"
+          className="w-full mt-1 font-semibold"
           type="submit"
           disabled={!isDirty || !isValid}
         >
-          Sign Up
+          Create Account
         </Button>
       </form>
     </Form>

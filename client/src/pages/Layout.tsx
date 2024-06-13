@@ -3,10 +3,12 @@ import { Outlet } from "react-router-dom";
 
 const Layout = () => {
   return (
-    <div>
+    <>
       <Navbar />
-      <Outlet />
-    </div>
+      <div className="mt-6">
+        <Outlet />
+      </div>
+    </>
   );
 };
 
