@@ -41,7 +41,7 @@ const SignUpForm = () => {
   };
   return (
     <Form {...form}>
-      <form className="w-[350px] p-2" onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         {Object.keys(signUpSchema.shape).map((fieldName, index) => (
           <FormField
             key={index}
@@ -50,7 +50,11 @@ const SignUpForm = () => {
             render={({ field }) => (
               <FormItem className="py-1">
                 <FormControl>
-                  <Input placeholder={`Enter ${fieldName}`} {...field} />
+                  <Input
+                    type={`${fieldName === "password" ? "password" : "text"}`}
+                    placeholder={`Enter ${fieldName}`}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

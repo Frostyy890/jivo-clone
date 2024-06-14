@@ -3,15 +3,19 @@ import Layout from "@/pages/Layout";
 import SignInPage from "@/pages/auth/SignIn";
 import SignUpPage from "@/pages/auth/SignUp";
 import Home from "@/pages/Home";
+import About from "./pages/About";
+import Chat from "./pages/Chat";
 
 import "./App.css";
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
         <Route path="/sign-in" element={<SignInPage />} />

@@ -1,63 +1,59 @@
+import { useMatch, useResolvedPath } from "react-router-dom";
 import { buttonVariants } from "./ui/button";
 
 const Navbar = () => {
   const tabs = [
     {
-      link: "/",
+      path: "/",
       name: "Home",
     },
     {
-      link: "/",
+      path: "/about",
       name: "About",
     },
     {
-      link: "/",
-      name: "Contacts",
+      path: "/contact",
+      name: "Contact",
     },
     {
-      link: "/",
+      path: "/blog",
       name: "Blog",
     },
     {
-      link: "/",
-      name: "Chats",
+      path: "/chat",
+      name: "Chat",
     },
   ];
   return (
-    <nav className="w-full fixed top-0 z-50 bg-white border shadow-sm py-2 px-8">
-      <div className="flex items-center justify-between">
+    <nav className="w-full fixed inset-x-0 top-0 z-50 bg-white border shadow-sm">
+      <div className="flex items-center justify-between h-14 py-2 px-8">
         {/* Logo */}
         <a href="/" className="text-2xl font-semibold">
           Jivo
         </a>
 
         {/* Tabs */}
-        <div className="flex gap-4 items-center">
-          {tabs.map(({ link, name }) => (
-            <a
-              href={link}
-              className={`text-base ${buttonVariants({ variant: "link" })}`}
-            >
-              {name}
-            </a>
+        <div className="hidden md:flex gap-8">
+          {tabs.map(({ path, name }, index) => (
+            <NavLink key={index} path={path} name={name} />
           ))}
         </div>
 
         {/* Sign in / Sign up */}
-        <div className="flex gap-4">
+        <div className="hidden md:flex gap-4">
           <a
             href="/sign-in"
-            className={`font-semibold ${buttonVariants({
+            className={buttonVariants({
               variant: "outline",
-            })}`}
+            })}
           >
             Sign in
           </a>
           <a
             href="/sign-up"
-            className={`font-semibold ${buttonVariants({
+            className={buttonVariants({
               variant: "default",
-            })}`}
+            })}
           >
             Sign up
           </a>
@@ -66,5 +62,20 @@ const Navbar = () => {
     </nav>
   );
 };
+
+function NavLink({ path, name }: { path: string; name: string }) {
+  const resolvedPath = useResolvedPath(path);
+  const isOnPage = useMatch({ path: resolvedPath.pathname, end: true });
+  return (
+    <a
+      href={path}
+      className={`hover:underline underline-offset-2 ${
+        isOnPage ? "underline" : ""
+      }`}
+    >
+      {name}
+    </a>
+  );
+}
 
 export default Navbar;
