@@ -1,14 +1,12 @@
 import { Server } from "socket.io";
-import configuration from "../config/AppConfig";
+import configuration from "../config";
 import allowedOrigins from "../config/AllowedOrigins";
 
 const initializeSocket = (server: any) => {
   const io = new Server(server, {
     cors: {
       origin:
-        configuration.app.env === "production"
-          ? configuration.app.productionUrl
-          : allowedOrigins,
+        configuration.app.env === "production" ? configuration.app.productionUrl : allowedOrigins,
     },
   });
 
