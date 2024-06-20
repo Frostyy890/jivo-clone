@@ -18,8 +18,8 @@ function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/auth/sign-in" element={<SignInPage />} />
+        <Route path="/auth/sign-up" element={<SignUpPage />} />
       </Routes>
     </div>
   );

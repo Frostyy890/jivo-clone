@@ -42,7 +42,7 @@ const Navbar = () => {
         {/* Sign in / Sign up */}
         <div className="hidden md:flex gap-4">
           <a
-            href="/sign-in"
+            href="/auth/sign-in"
             className={buttonVariants({
               variant: "outline",
             })}
@@ -50,7 +50,7 @@ const Navbar = () => {
             Sign in
           </a>
           <a
-            href="/sign-up"
+            href="/auth/sign-up"
             className={buttonVariants({
               variant: "default",
             })}

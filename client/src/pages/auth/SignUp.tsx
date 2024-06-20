@@ -7,7 +7,7 @@ const SignUpPage = () => {
       <div className="w-full h-full bg-primary"></div>
       <div className="w-full relative h-full flex items-center justify-center">
         <div className="absolute top-4 right-4 font-semibold">
-          <a href="/sign-in" className={buttonVariants({ variant: "ghost" })}>
+          <a href="/auth/sign-in" className={buttonVariants({ variant: "ghost" })}>
             Login
           </a>
         </div>
@@ -26,9 +26,7 @@ const SignUpPage = () => {
               <span className="w-full border-t"></span>
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="px-2 bg-background text-muted-foreground">
-                Or continue with
-              </span>
+              <span className="px-2 bg-background text-muted-foreground">Or continue with</span>
             </div>
           </div>
 
@@ -44,17 +42,11 @@ const SignUpPage = () => {
 
           <span className="text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
-            <a
-              href="/terms"
-              className=" outline-none underline underline-offset-2"
-            >
+            <a href="/terms" className=" outline-none underline underline-offset-2">
               Terms of Service
             </a>{" "}
             and{" "}
-            <a
-              href="/privacy"
-              className="outline-none underline underline-offset-2"
-            >
+            <a href="/privacy" className="outline-none underline underline-offset-2">
               Privacy Policy
             </a>
           </span>
@@ -77,11 +69,7 @@ export function GitHubIconSvg() {
 
 export function GoogleIconSvg() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 186.69 190.5"
-      className="mr-2 h-4 w-4"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 186.69 190.5" className="mr-2 h-4 w-4">
       <path
         fill="#4285f4"
         d="M95.25 77.932v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z"

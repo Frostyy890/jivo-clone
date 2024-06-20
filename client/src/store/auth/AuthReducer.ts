@@ -27,7 +27,10 @@ const AuthReducer: Reducer<IAuthState, AuthAction> = (state = initialAuthState, 
     case AuthActionTypes.LOG_OUT:
       localStorage.removeItem("user");
       Cookies.remove("token");
-      return initialAuthState;
+      return {
+        ...state,
+        isLoggedIn: false,
+      };
     default:
       return state;
   }

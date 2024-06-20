@@ -32,7 +32,7 @@ const SignInPage = () => {
             </a>
             <span className="text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <a href="/sign-up" className="underline underline-offset-2">
+              <a href="/auth/sign-up" className="underline underline-offset-2">
                 Sign Up
               </a>
             </span>
@@ -43,9 +43,7 @@ const SignInPage = () => {
               <span className="w-full border-t"></span>
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="px-2 bg-background text-muted-foreground">
-                Or continue with
-              </span>
+              <span className="px-2 bg-background text-muted-foreground">Or continue with</span>
             </div>
           </div>
 
