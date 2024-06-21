@@ -1,10 +1,7 @@
 import UserService from "./UserService";
 import TokenService from "./TokenService";
 import { IAuthService } from "../interfaces";
-import {
-  LoginUserData,
-  RegisterUserData,
-} from "../validations/UserValidations";
+import { LoginUserData, RegisterUserData } from "../validations/UserValidations";
 import configuration from "../../../config";
 import HttpException, { HttpStatusCodes } from "../helpers/HttpException";
 
@@ -21,21 +18,18 @@ export default class implements IAuthService {
       email: newUser.email,
       roles: newUser.roles,
     });
-    await this.userService.update({ id: newUser.id }, { refreshToken });
+    await this.userService.update(newUser.id, { refreshToken });
     return { accessToken, refreshToken };
   }
   async login(data: LoginUserData) {
     const user = await this.userService.findOne({ email: data.email });
     if (!user || !(await user.verifyPassword(data.password)))
-      throw new HttpException(
-        HttpStatusCodes.BAD_REQUEST,
-        "Invalid credentials"
-      );
+      throw new HttpException(HttpStatusCodes.BAD_REQUEST, "Wrong credentials");
     const { accessToken, refreshToken } = this.tokenService.generateAuthTokens({
       email: user.email,
       roles: user.roles,
     });
-    await this.userService.update({ id: user.id }, { refreshToken });
+    await this.userService.update(user.id, { refreshToken });
     return { accessToken, refreshToken };
   }
   async refresh(refreshToken: string): Promise<string> {
@@ -45,9 +39,7 @@ export default class implements IAuthService {
       refreshToken,
       configuration.tokens.refreshToken.secret
     );
-    const isRolesMatch = user.roles.every((role) =>
-      decoded.roles.includes(role)
-    );
+    const isRolesMatch = user.roles.every((role) => decoded.roles.includes(role));
     if (decoded.email !== user.email || !isRolesMatch)
       throw new HttpException(HttpStatusCodes.FORBIDDEN);
     const { accessToken } = this.tokenService.generateAuthTokens({
@@ -57,9 +49,8 @@ export default class implements IAuthService {
     return accessToken;
   }
   async logout(refreshToken: string) {
-    return await this.userService.update(
-      { refreshToken },
-      { refreshToken: "" }
-    );
+    const user = await this.userService.findOne({ refreshToken });
+    if (user) await this.userService.update(user.id, { refreshToken: "" });
+    return;
   }
 }

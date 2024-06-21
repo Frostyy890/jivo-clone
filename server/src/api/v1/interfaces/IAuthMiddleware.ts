@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { Role } from "../database/models/User";
+import { Role } from "../../../database/models/User";
 
 export interface IAuthRequest extends Request {
   user?: { email: string; roles: Role[] };

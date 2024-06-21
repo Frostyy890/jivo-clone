@@ -5,5 +5,5 @@ export interface IAuthService {
   register(data: RegisterUserData): Promise<AuthTokens>;
   login(data: LoginUserData): Promise<AuthTokens>;
   refresh(refreshToken: string): Promise<string>;
-  logout(refreshToken: string): Promise<[affectedCount: number]>;
+  logout(refreshToken: string): Promise<void>;
 }

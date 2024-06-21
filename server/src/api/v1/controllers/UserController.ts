@@ -9,44 +9,24 @@ export default class implements IUserController {
   constructor() {
     this.userService = new UserService();
   }
-  async findAll(_req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const users = await this.userService.findAll();
-      res.status(HttpStatusCodes.OK).send(mapUserOutput(users));
-    } catch (error) {
-      next(error);
-    }
+  async findAll(_req: Request, res: Response, _next: NextFunction): Promise<void> {
+    const users = await this.userService.findAll();
+    res.status(HttpStatusCodes.OK).send(mapUserOutput(users));
   }
-  async findById(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const user = await this.userService.findById(req.params.id);
-      res.status(HttpStatusCodes.OK).send(mapUserOutput(user));
-    } catch (error) {
-      next(error);
-    }
+  async findById(req: Request, res: Response, _next: NextFunction): Promise<void> {
+    const user = await this.userService.findById(req.params.id);
+    res.status(HttpStatusCodes.OK).send(mapUserOutput(user));
   }
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const user = await this.userService.create(req.body);
-      res.status(HttpStatusCodes.CREATED).send(mapUserOutput(user));
-    } catch (error) {
-      next(error);
-    }
+    const user = await this.userService.create(req.body);
+    res.status(HttpStatusCodes.CREATED).send(mapUserOutput(user));
   }
-  async update(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      await this.userService.update({ id: req.params.id }, req.body);
-      res.sendStatus(HttpStatusCodes.OK);
-    } catch (error) {
-      next(error);
-    }
+  async update(req: Request, res: Response, _next: NextFunction): Promise<void> {
+    await this.userService.update(req.params.id, req.body);
+    res.sendStatus(HttpStatusCodes.OK);
   }
-  async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      await this.userService.delete({ id: req.params.id });
-      res.sendStatus(HttpStatusCodes.OK);
-    } catch (error) {
-      next(error);
-    }
+  async delete(req: Request, res: Response, _next: NextFunction): Promise<void> {
+    await this.userService.delete(req.params.id);
+    res.sendStatus(HttpStatusCodes.OK);
   }
 }

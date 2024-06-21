@@ -3,11 +3,12 @@ import type {
   UserAttribute,
   UserUpdateAttributes,
   UserCreationAttributes,
-} from "../database/models/User";
+} from "../../../database/models/User";
 import { UserRepository } from "../repositories";
 import { plainToInstance } from "class-transformer";
 import { CreateUserDto, UpdateUserDto } from "../dto";
 import HttpException, { HttpStatusCodes } from "../helpers/HttpException";
+import User from "../../../database/models/User";
 
 export default class implements IUserService {
   private readonly userRepository: UserRepository;
@@ -20,24 +21,23 @@ export default class implements IUserService {
   async findOne(where: UserAttribute) {
     return await this.userRepository.findOne(where);
   }
-  async findById(id: string) {
+  async findById(id: string): Promise<User> {
     const user = await this.userRepository.findOne({ id });
-    if (!user)
-      throw new HttpException(HttpStatusCodes.NOT_FOUND, "User not found");
+    if (!user) throw new HttpException(HttpStatusCodes.NOT_FOUND, "User not found");
     return user;
   }
+
   async create(data: UserCreationAttributes) {
     const transformedData = plainToInstance(CreateUserDto, data);
     return await this.userRepository.create(transformedData);
   }
-  async update(where: UserAttribute, data: UserUpdateAttributes) {
+  async update(id: string, data: UserUpdateAttributes) {
+    await this.findById(id);
     const transformedData = plainToInstance(UpdateUserDto, data);
-    return await this.userRepository.update(where, transformedData);
+    return await this.userRepository.update({ id }, transformedData);
   }
-  async delete(where: UserAttribute) {
-    const user = await this.findOne(where);
-    if (!user)
-      throw new HttpException(HttpStatusCodes.NOT_FOUND, "User not found");
-    return await this.userRepository.delete(where);
+  async delete(id: string) {
+    await this.findById(id);
+    return await this.userRepository.delete({ id });
   }
 }

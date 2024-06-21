@@ -1,4 +1,4 @@
-import { Role } from "../api/v1/database/models/User";
+import { Role } from "../database/models/User";
 
 interface Permissions {
   [key: string]: {

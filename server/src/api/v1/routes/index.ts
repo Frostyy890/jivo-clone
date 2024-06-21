@@ -2,7 +2,7 @@ import { Router } from "express";
 import userRoutes from "./UserRoutes";
 import authRoutes from "./AuthRoutes";
 import { AuthMiddleware } from "../middlewares";
-import { Role } from "../database/models/User";
+import { Role } from "../../../database/models/User";
 
 const appRoutes = Router();
 

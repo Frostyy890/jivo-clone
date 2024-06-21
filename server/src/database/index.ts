@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
-import configuration from "../../../config";
+import configuration from "../config";
 
 export const db = new Sequelize({
   dialect: "postgres",

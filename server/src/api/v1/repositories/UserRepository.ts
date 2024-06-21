@@ -3,7 +3,7 @@ import User, {
   UserCreationAttributes,
   UserAttribute,
   UserUpdateAttributes,
-} from "../database/models/User";
+} from "../../../database/models/User";
 
 export default class implements IUserRepository {
   private readonly user;

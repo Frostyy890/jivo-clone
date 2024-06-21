@@ -1,4 +1,8 @@
-import User, { Role, UserCreationAttributes, UserUpdateAttributes } from "../database/models/User";
+import User, {
+  Role,
+  UserCreationAttributes,
+  UserUpdateAttributes,
+} from "../../../database/models/User";
 import { Exclude, Expose, Transform, plainToInstance } from "class-transformer";
 import configuration from "../../../config";
 import { hashSync } from "bcrypt";

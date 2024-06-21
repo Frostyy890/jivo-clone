@@ -2,7 +2,7 @@ import User, {
   UserAttribute,
   UserCreationAttributes,
   UserUpdateAttributes,
-} from "../database/models/User";
+} from "../../../database/models/User";
 export interface IUserRepository {
   findAll(): Promise<User[]>;
   findOne(where: UserAttribute): Promise<User | null>;
