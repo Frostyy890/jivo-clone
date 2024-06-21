@@ -1,8 +1,12 @@
 import UserService from "./UserService";
 import TokenService from "./TokenService";
 import { IAuthService } from "../interfaces";
-import { LoginUserData, RegisterUserData } from "../validations/UserValidations";
+import {
+  LoginUserData,
+  RegisterUserData,
+} from "../validations/UserValidations";
 import configuration from "../../../config";
+import HttpException, { HttpStatusCodes } from "../helpers/HttpException";
 
 export default class implements IAuthService {
   private readonly userService: UserService;
@@ -23,7 +27,10 @@ export default class implements IAuthService {
   async login(data: LoginUserData) {
     const user = await this.userService.findOne({ email: data.email });
     if (!user || !(await user.verifyPassword(data.password)))
-      throw new Error("Invalid credentials");
+      throw new HttpException(
+        HttpStatusCodes.BAD_REQUEST,
+        "Invalid credentials"
+      );
     const { accessToken, refreshToken } = this.tokenService.generateAuthTokens({
       email: user.email,
       roles: user.roles,
@@ -33,13 +40,16 @@ export default class implements IAuthService {
   }
   async refresh(refreshToken: string): Promise<string> {
     const user = await this.userService.findOne({ refreshToken });
-    if (!user) throw new Error("Forbidden");
+    if (!user) throw new HttpException(HttpStatusCodes.FORBIDDEN);
     const decoded = await this.tokenService.verifyToken(
       refreshToken,
       configuration.tokens.refreshToken.secret
     );
-    const isRolesMatch = user.roles.every((role) => decoded.roles.includes(role));
-    if (decoded.email !== user.email || !isRolesMatch) throw new Error("Forbidden");
+    const isRolesMatch = user.roles.every((role) =>
+      decoded.roles.includes(role)
+    );
+    if (decoded.email !== user.email || !isRolesMatch)
+      throw new HttpException(HttpStatusCodes.FORBIDDEN);
     const { accessToken } = this.tokenService.generateAuthTokens({
       email: user.email,
       roles: user.roles,
@@ -47,6 +57,9 @@ export default class implements IAuthService {
     return accessToken;
   }
   async logout(refreshToken: string) {
-    return await this.userService.update({ refreshToken }, { refreshToken: "" });
+    return await this.userService.update(
+      { refreshToken },
+      { refreshToken: "" }
+    );
   }
 }

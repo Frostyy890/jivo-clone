@@ -7,6 +7,7 @@ import type {
 import { UserRepository } from "../repositories";
 import { plainToInstance } from "class-transformer";
 import { CreateUserDto, UpdateUserDto } from "../dto";
+import HttpException, { HttpStatusCodes } from "../helpers/HttpException";
 
 export default class implements IUserService {
   private readonly userRepository: UserRepository;
@@ -21,7 +22,8 @@ export default class implements IUserService {
   }
   async findById(id: string) {
     const user = await this.userRepository.findOne({ id });
-    if (!user) throw new Error("User not found");
+    if (!user)
+      throw new HttpException(HttpStatusCodes.NOT_FOUND, "User not found");
     return user;
   }
   async create(data: UserCreationAttributes) {
@@ -34,7 +36,8 @@ export default class implements IUserService {
   }
   async delete(where: UserAttribute) {
     const user = await this.findOne(where);
-    if (!user) throw new Error("User not found");
+    if (!user)
+      throw new HttpException(HttpStatusCodes.NOT_FOUND, "User not found");
     return await this.userRepository.delete(where);
   }
 }

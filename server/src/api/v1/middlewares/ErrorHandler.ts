@@ -1,8 +1,19 @@
 import { Request, Response, NextFunction } from "express";
-import { HttpStatusCodes } from "../helpers/HttpException";
-const ErrorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  if (err instanceof Error) {
-    return res.status(HttpStatusCodes.BAD_REQUEST).send({ errors: [{ message: err.message }] });
+import { CustomError, HttpStatusCodes } from "../helpers/HttpException";
+
+const ErrorHandler = (
+  err: Error,
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  if (err instanceof CustomError) {
+    const { statusCode, errors } = err;
+    return res.status(statusCode).send({
+      errors: errors.map((error) => {
+        return { message: error };
+      }),
+    });
   }
   console.error("Unhandled error:", err);
   return res
