@@ -19,7 +19,7 @@ export default class implements IAuthService {
       roles: newUser.roles,
     });
     await this.userService.update(newUser.id, { refreshToken });
-    return { accessToken, refreshToken };
+    return { tokens: { accessToken, refreshToken }, user: newUser };
   }
   async login(data: LoginUserData) {
     const user = await this.userService.findOne({ email: data.email });
@@ -30,7 +30,7 @@ export default class implements IAuthService {
       roles: user.roles,
     });
     await this.userService.update(user.id, { refreshToken });
-    return { accessToken, refreshToken };
+    return { tokens: { accessToken, refreshToken }, user };
   }
   async refresh(refreshToken: string): Promise<string> {
     const user = await this.userService.findOne({ refreshToken });
