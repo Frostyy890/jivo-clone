@@ -1,9 +1,13 @@
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { IAuthData, useApi } from "@/hooks/api/useApi";
+import { useAuth } from "@/store/auth/AuthContext";
+import { useToast } from "@/components/ui/use-toast";
 
 const signUpSchema = z.object({
   username: z.string().min(6, { message: "Username must be at least 6 characters long" }),
@@ -26,9 +30,35 @@ const SignUpForm = () => {
     formState: { isDirty, isValid },
   } = form;
 
-  const onSubmit = (data: SignUpFormData) => {
-    console.log(data);
+  const [authData, setAuthData] = React.useState<IAuthData>();
+  const { dispatchLogIn } = useAuth();
+  const { apiRequest } = useApi();
+  const { toast } = useToast();
+  const onSubmit = async (data: SignUpFormData) => {
+    await apiRequest({
+      config: {
+        url: "/auth/register",
+        method: "POST",
+        data,
+      },
+      handleSuccessResponse: (data) => setAuthData(data),
+      handleErrorResponse: (data) =>
+        toast({
+          title: "Error",
+          description: data,
+          variant: "destructive",
+          duration: 3000,
+        }),
+    });
   };
+  React.useEffect(() => {
+    if (authData && authData.success) {
+      dispatchLogIn({
+        token: authData.token,
+        user: authData.user,
+      });
+    }
+  }, [authData, dispatchLogIn]);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

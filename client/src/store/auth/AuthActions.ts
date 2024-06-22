@@ -26,4 +26,4 @@ export type AuthAction =
       type: AuthActionTypes.LOG_IN;
       payload: IAuthPayload;
     }
-  | { type: AuthActionTypes; payload: null };
+  | { type: AuthActionTypes.LOG_OUT; payload: null };

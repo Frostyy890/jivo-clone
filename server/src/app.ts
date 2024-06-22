@@ -9,6 +9,7 @@ import initializeSocket from "./ws";
 import { connectToDB } from "./database";
 import { ErrorHandler } from "./api/v1/middlewares";
 import HttpException, { HttpStatusCodes } from "./api/v1/helpers/HttpException";
+import { Logger } from "./api/v1/middlewares/Logger";
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(cookieParser());
+
+app.use(Logger);
 
 app.use("/api/v1", appRoutes);
 

@@ -19,6 +19,8 @@ export const initialAuthState: IAuthState = {
 const AuthReducer: Reducer<IAuthState, AuthAction> = (state = initialAuthState, action) => {
   switch (action.type) {
     case AuthActionTypes.LOG_IN:
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      Cookies.set("token", action.payload.token);
       return {
         ...state,
         ...action.payload,
