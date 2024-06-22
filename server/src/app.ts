@@ -1,18 +1,24 @@
 import "express-async-errors";
 import express, { Request, Response, NextFunction } from "express";
+import cors from "cors";
+import configuration from "./config";
+import { corsOptions } from "./config/CORS";
 import cookieParser from "cookie-parser";
 import appRoutes from "./api/v1/routes";
-import configuration from "./config";
 import initializeSocket from "./ws";
 import { connectToDB } from "./database";
 import { ErrorHandler } from "./api/v1/middlewares";
 import HttpException, { HttpStatusCodes } from "./api/v1/helpers/HttpException";
+import { Logger } from "./api/v1/middlewares/Logger";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOptions));
 app.use(cookieParser());
+
+app.use(Logger);
 
 app.use("/api/v1", appRoutes);
 

@@ -3,6 +3,7 @@ import { AuthService } from "../services";
 import { HttpStatusCodes } from "../helpers/HttpException";
 import configuration from "../../../config";
 import { IAuthController } from "../interfaces";
+import { mapUserOutput } from "../dto";
 
 export default class implements IAuthController {
   private readonly authService: AuthService;
@@ -10,18 +11,20 @@ export default class implements IAuthController {
     this.authService = new AuthService();
   }
   async register(req: Request, res: Response, _next: NextFunction): Promise<void> {
-    const { accessToken, refreshToken } = await this.authService.register(req.body);
+    const { tokens, user } = await this.authService.register(req.body);
+    const { accessToken, refreshToken } = tokens;
     res
       .cookie("rf_tkn", refreshToken, configuration.tokens.refreshToken.cookieOptions)
       .status(HttpStatusCodes.OK)
-      .send({ accessToken });
+      .json({ token: accessToken, user: mapUserOutput(user), success: true });
   }
   async login(req: Request, res: Response, _next: NextFunction): Promise<void> {
-    const { accessToken, refreshToken } = await this.authService.login(req.body);
+    const { tokens, user } = await this.authService.login(req.body);
+    const { accessToken, refreshToken } = tokens;
     res
       .cookie("rf_tkn", refreshToken, configuration.tokens.refreshToken.cookieOptions)
       .status(HttpStatusCodes.OK)
-      .send({ accessToken });
+      .json({ token: accessToken, user: mapUserOutput(user), success: true });
   }
   async refresh(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const accessToken = await this.authService.refresh(req.cookies["rf_tkn"]);

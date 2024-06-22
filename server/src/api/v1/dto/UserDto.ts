@@ -16,7 +16,7 @@ export default class UserDto implements UserCreationAttributes {
   declare email: string;
   @Exclude()
   declare password: string;
-  @Exclude()
+  @Expose()
   declare roles: Role[];
   @Exclude()
   declare refreshToken: string;

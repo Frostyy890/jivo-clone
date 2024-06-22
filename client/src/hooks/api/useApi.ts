@@ -1,41 +1,58 @@
 import React from "react";
 import { IAuthPayload } from "@/store/auth/AuthActions";
 import { AuthContext } from "@/store/auth/AuthContext";
+import axios, { AxiosRequestConfig } from "axios";
 
 export interface IAuthData extends IAuthPayload {
   success: boolean;
 }
 
 export type ApiRequestProps = {
-  endpoint: string;
-  params: { [key: string]: any };
+  config: AxiosRequestConfig<any>;
   handleSuccessResponse: (data: any) => void;
-  handleErrorResponse?: (data: Error) => void;
+  handleErrorResponse?: (data: any) => void;
 };
-
-const BASE_URL = process.env.BASE_URL || "";
-const TOKEN_TYPE = process.env.TOKEN_TYPE || "Bearer";
 
 export const useApi = () => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState(null);
+  const [error, setError] = React.useState<any>(null);
   const { authState, dispatchLogOut } = React.useContext(AuthContext);
-
   const apiRequest = React.useCallback(
-    async ({ endpoint, params, handleSuccessResponse, handleErrorResponse }: ApiRequestProps) => {
+    async ({ config, handleSuccessResponse, handleErrorResponse }: ApiRequestProps) => {
       setIsLoading(true);
       setError(null);
-      try {
-        if (authState.isLoggedIn)
-          params.headers["Authorization"] = `${TOKEN_TYPE} ${authState.token}`;
-        const res = await fetch(BASE_URL + endpoint, { ...params });
-        if (!res.ok) {
-          const data = await res.json();
-          throw new Error(data.error);
-        }
-        const data = await res.json();
-      } catch (error) {}
+      //AXIOS DEFAULTS
+      axios.defaults.baseURL = import.meta.env.VITE_BASE_URL || "";
+      axios.defaults.withCredentials = true;
+      if (authState.isLoggedIn) {
+        const TOKEN_TYPE = import.meta.env.VITE_TOKEN_TYPE || "Bearer";
+        axios.defaults.headers.common["Authorization"] = TOKEN_TYPE + " " + authState.token;
+      }
+      // AXIOS REQUEST
+      axios(config)
+        .then((res) => handleSuccessResponse && handleSuccessResponse(res.data))
+        .catch((err: any) => {
+          err?.response?.status === 401 && dispatchLogOut();
+          if (handleErrorResponse) {
+            if (err.response?.data?.errors) {
+              err.response.data.errors.forEach((error: any) => handleErrorResponse(error.message));
+              return;
+            }
+            handleErrorResponse(err.message || err);
+          }
+          err.response?.data?.errors && setError(err.response.data.errors);
+          setError(err.message || err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     },
-    [authState.isLoggedIn, authState.token, authState.user]
+    [authState.isLoggedIn, authState.token, dispatchLogOut]
   );
+  return {
+    apiRequest,
+    isLoading,
+    error,
+    setError,
+  };
 };
