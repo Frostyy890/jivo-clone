@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import configuration from "../config";
-import allowedOrigins from "../config/AllowedOrigins";
+import { allowedOrigins } from "../config/CORS";
 
 const initializeSocket = (server: any) => {
   const io = new Server(server, {

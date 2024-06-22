@@ -1,8 +1,10 @@
 import "express-async-errors";
 import express, { Request, Response, NextFunction } from "express";
+import cors from "cors";
+import configuration from "./config";
+import { corsOptions } from "./config/CORS";
 import cookieParser from "cookie-parser";
 import appRoutes from "./api/v1/routes";
-import configuration from "./config";
 import initializeSocket from "./ws";
 import { connectToDB } from "./database";
 import { ErrorHandler } from "./api/v1/middlewares";
@@ -12,6 +14,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 app.use("/api/v1", appRoutes);
