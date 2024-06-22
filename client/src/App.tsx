@@ -5,11 +5,15 @@ import SignUpPage from "@/pages/auth/SignUp";
 import Home from "@/pages/Home";
 import About from "./pages/About";
 import Chat from "./pages/Chat";
+import { Toaster } from "./components/ui/toaster";
+import { useAuth } from "./store/auth/AuthContext";
 
 import "./App.css";
-import { Toaster } from "./components/ui/toaster";
 
 function App() {
+  const {
+    authState: { isLoggedIn },
+  } = useAuth();
   return (
     <div className="app">
       <Routes>
@@ -19,8 +23,12 @@ function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
-        <Route path="/auth/sign-in" element={<SignInPage />} />
-        <Route path="/auth/sign-up" element={<SignUpPage />} />
+        {!isLoggedIn && (
+          <>
+            <Route path="/auth/sign-in" element={<SignInPage />} />
+            <Route path="/auth/sign-up" element={<SignUpPage />} />
+          </>
+        )}
       </Routes>
       <Toaster />
     </div>
