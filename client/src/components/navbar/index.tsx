@@ -30,9 +30,9 @@ const Navbar = () => {
 
   return (
     <nav className="w-full fixed inset-x-0 top-0 z-50 bg-white border shadow-sm rounded-b-sm">
-      <div className="flex items-center justify-between h-14 py-2 px-8">
+      <div className="flex items-center font-medium justify-between h-14 py-2 px-8">
         {/* Logo */}
-        <a href="/" className="text-2xl font-semibold">
+        <a href="/" className="text-xl font-semibold">
           Jivo
         </a>
 
@@ -74,7 +74,12 @@ function NavLink({ path, name }: { path: string; name: string }) {
   const resolvedPath = useResolvedPath(path);
   const isOnPage = useMatch({ path: resolvedPath.pathname, end: true });
   return (
-    <a href={path} className={`hover:underline underline-offset-2 ${isOnPage ? "underline" : ""}`}>
+    <a
+      href={path}
+      className={`hover:underline transition-all duration-300 underline-offset-2 ${
+        isOnPage ? "underline" : ""
+      }`}
+    >
       {name}
     </a>
   );

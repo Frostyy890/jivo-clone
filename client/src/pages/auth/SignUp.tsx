@@ -14,9 +14,7 @@ const SignUpPage = () => {
         <div className="w-[350px] flex flex-col gap-4 text-center">
           <div className="flex flex-col gap-2">
             <h1 className="font-semibold text-2xl">Create an account</h1>
-            <p className="text-sm text-muted-foreground">
-              Enter your credentials to create an account
-            </p>
+            <p className="text-muted-foreground">Enter your email below to create an account</p>
           </div>
 
           <SignUpForm />
@@ -25,7 +23,7 @@ const SignUpPage = () => {
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t"></span>
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
+            <div className="relative flex justify-center text-sm uppercase">
               <span className="px-2 bg-background text-muted-foreground">Or continue with</span>
             </div>
           </div>
@@ -40,7 +38,7 @@ const SignUpPage = () => {
             </Button>
           </div>
 
-          <span className="text-sm text-muted-foreground">
+          <span className="text-muted-foreground">
             By clicking continue, you agree to our{" "}
             <a href="/terms" className=" outline-none underline underline-offset-2">
               Terms of Service

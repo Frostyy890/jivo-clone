@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthActionTypes, IAuthPayload } from "./AuthActions";
 import AuthReducer, { IAuthState, initialAuthState } from "./AuthReducer";
 
-type Props = {
+type AuthProviderProps = {
   children: React.ReactNode;
 };
 
@@ -19,7 +19,7 @@ export const AuthContext = React.createContext<IAuthContext>({
   dispatchLogOut: () => {},
 });
 
-export const AuthContextProvider = ({ children }: Props) => {
+export const AuthContextProvider = ({ children }: AuthProviderProps) => {
   const [authState, authDispatch] = React.useReducer(AuthReducer, initialAuthState);
   const navigate = useNavigate();
   React.useEffect(() => {

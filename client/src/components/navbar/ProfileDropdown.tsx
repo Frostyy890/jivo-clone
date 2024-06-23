@@ -15,39 +15,45 @@ import LogOutDialog from "./LogOutDialog";
 
 const ProfileDropdown = () => {
   const { authState } = useAuth();
-  const defaultIconStyle = "mr-2 h-4 w-4";
+  const defaultIconStyle = "mr-2 h-5 w-5";
+  const defaultTextStyle = "font-normal";
   const [open, setOpen] = React.useState(false);
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Avatar>
+          <Avatar className="w-9 h-9">
             <AvatarImage src="" alt="avatar" />
             <AvatarFallback className="bg-black text-white">
               {authState.user?.username[0].toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-52">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuContent className="w-52" align="end">
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col gap-1">
+              <p className="text-base font-medium leading-none">{authState.user?.username}</p>
+              <p className="text-sm leading-none text-muted-foreground">{authState.user?.email}</p>
+            </div>
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem className={defaultTextStyle}>
               <User2 className={defaultIconStyle} />
               <span>Profile</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem className={defaultTextStyle}>
               <Settings className={defaultIconStyle} />
               <span>Settings</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem className={defaultTextStyle}>
               <CreditCard className={defaultIconStyle} />
               <span>Billing</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setOpen(true)}>
+            <DropdownMenuItem className={defaultTextStyle} onClick={() => setOpen(true)}>
               <LogOut className={defaultIconStyle} />
               <span>Log out</span>
             </DropdownMenuItem>
