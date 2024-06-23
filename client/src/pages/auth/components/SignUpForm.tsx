@@ -41,7 +41,15 @@ const SignUpForm = () => {
         method: "POST",
         data,
       },
-      handleSuccessResponse: (data) => setAuthData(data),
+      handleSuccessResponse: (data) => {
+        setAuthData(data);
+        toast({
+          title: "Success",
+          description: "Registration successful",
+          variant: "success",
+          duration: 3000,
+        });
+      },
       handleErrorResponse: (data) =>
         toast({
           title: "Error",
