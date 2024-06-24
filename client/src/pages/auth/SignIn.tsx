@@ -1,28 +1,26 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import SignInForm from "./components/SignInForm";
 import { GitHubIconSvg, GoogleIconSvg } from "./SignUp";
 
 const SignInPage = () => {
   return (
     <div className="flex w-full h-full justify-between">
-      <div className="relative w-full h-full flex items-center justify-center">
-        <div className="absolute top-4 left-4 font-semibold">
-          <a href="/" className={buttonVariants({ variant: "ghost" })}>
-            <ArrowBackIconSvg />
-            Back
-          </a>
-        </div>
-
+      <div className="w-full h-full flex items-center justify-center">
         <div className="w-[350px] text-center flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <h1 className="font-semibold text-2xl">Welcome back</h1>
-            <p className="text-muted-foreground">Enter your email below to login to your account</p>
+            <p className="text-muted-foreground">
+              Enter your email below to login to your account
+            </p>
           </div>
 
           <SignInForm />
 
           <div className="flex flex-col gap-2">
-            <a href="/sign-in" className="text-muted-foreground underline underline-offset-2">
+            <a
+              href="/sign-in"
+              className="text-muted-foreground underline underline-offset-2"
+            >
               Forgot password?
             </a>
             <span className="text-muted-foreground">
@@ -38,7 +36,9 @@ const SignInPage = () => {
               <span className="w-full border-t"></span>
             </div>
             <div className="relative flex justify-center text-sm uppercase">
-              <span className="px-2 bg-background text-muted-foreground">Or continue with</span>
+              <span className="px-2 bg-background text-muted-foreground">
+                Or continue with
+              </span>
             </div>
           </div>
 
