@@ -16,7 +16,7 @@ import LogOutDialog from "./LogOutDialog";
 const ProfileDropdown = () => {
   const { authState } = useAuth();
   const defaultIconStyle = "mr-2 h-5 w-5";
-  const defaultTextStyle = "font-normal";
+  const defaultTextStyle = "font-medium";
   const [open, setOpen] = React.useState(false);
   return (
     <>
@@ -29,11 +29,15 @@ const ProfileDropdown = () => {
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-52" align="end">
+        <DropdownMenuContent className="w-56" align="end">
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col gap-1">
-              <p className="text-base font-medium leading-none">{authState.user?.username}</p>
-              <p className="text-sm leading-none text-muted-foreground">{authState.user?.email}</p>
+              <p className="text-base font-medium leading-none">
+                {authState.user?.username}
+              </p>
+              <p className="text-sm leading-none text-muted-foreground">
+                {authState.user?.email}
+              </p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -53,7 +57,10 @@ const ProfileDropdown = () => {
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem className={defaultTextStyle} onClick={() => setOpen(true)}>
+            <DropdownMenuItem
+              className={defaultTextStyle}
+              onClick={() => setOpen(true)}
+            >
               <LogOut className={defaultIconStyle} />
               <span>Log out</span>
             </DropdownMenuItem>
