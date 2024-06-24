@@ -1,4 +1,5 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import React from "react";
+import { Route, Routes as Router, Navigate } from "react-router-dom";
 import Layout from "@/pages/Layout";
 import SignInPage from "@/pages/auth/SignIn";
 import SignUpPage from "@/pages/auth/SignUp";
@@ -11,31 +12,23 @@ import { useAuth } from "./store/auth/AuthContext";
 import "./App.css";
 
 function App() {
-  const {
-    authState: { isLoggedIn },
-  } = useAuth();
-
-  if (isLoggedIn) {
-    return (
-      <div className="app">
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Route>
-        </Routes>
-      </div>
-    );
-  }
+  const { authState } = useAuth();
+  const PrivateRoutes = React.useCallback(() => {
+    if (!authState.isLoggedIn) return <Navigate to="/auth/sign-in" replace />;
+    return <Layout />;
+  }, [authState.isLoggedIn]);
   return (
     <div className="app">
-      <Routes>
+      <Router>
         <Route path="/auth/sign-in" element={<SignInPage />} />
         <Route path="/auth/sign-up" element={<SignUpPage />} />
-        <Route path="*" element={<Navigate to="/auth/sign-in" />} />
-      </Routes>
+        <Route element={<PrivateRoutes />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Route>
+      </Router>
       <Toaster />
     </div>
   );

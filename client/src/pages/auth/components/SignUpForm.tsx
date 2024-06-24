@@ -2,13 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IAuthData, useApi } from "@/hooks/api/useApi";
@@ -16,13 +10,9 @@ import { useAuth } from "@/store/auth/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 
 const signUpSchema = z.object({
-  username: z
-    .string()
-    .min(6, { message: "Username must be at least 6 characters long" }),
+  username: z.string().min(6, { message: "Username must be at least 6 characters long" }),
   email: z.string().email({ message: "Email must be valid" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters long" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
 });
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
@@ -51,7 +41,15 @@ const SignUpForm = () => {
         method: "POST",
         data,
       },
-      handleSuccessResponse: (data) => setAuthData(data),
+      handleSuccessResponse: (data) => {
+        setAuthData(data);
+        toast({
+          title: "Success",
+          description: "Signed up successfully",
+          variant: "success",
+          duration: 3000,
+        });
+      },
       handleErrorResponse: (data) =>
         toast({
           title: "Error",
@@ -91,11 +89,7 @@ const SignUpForm = () => {
             )}
           ></FormField>
         ))}
-        <Button
-          className="w-full mt-1 font-semibold"
-          type="submit"
-          disabled={!isDirty || !isValid}
-        >
+        <Button className="w-full mt-1 font-semibold" type="submit" disabled={!isDirty || !isValid}>
           Sign up with Email
         </Button>
       </form>
