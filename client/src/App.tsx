@@ -14,21 +14,26 @@ function App() {
   const {
     authState: { isLoggedIn },
   } = useAuth();
+
+  if (isLoggedIn) {
+    return (
+      <div className="app">
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Route>
+        </Routes>
+      </div>
+    );
+  }
   return (
     <div className="app">
       <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Route>
-        {!isLoggedIn && (
-          <>
-            <Route path="/auth/sign-in" element={<SignInPage />} />
-            <Route path="/auth/sign-up" element={<SignUpPage />} />
-          </>
-        )}
+        <Route path="/auth/sign-in" element={<SignInPage />} />
+        <Route path="/auth/sign-up" element={<SignUpPage />} />
       </Routes>
       <Toaster />
     </div>
