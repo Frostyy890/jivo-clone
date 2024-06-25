@@ -10,7 +10,7 @@ export interface IAuthState {
 
 const getToken = (): string | null => Cookies.get("token") || null;
 const getUser = (): IUser | null => {
-  const userFromStorage = localStorage.getItem("user");
+  const userFromStorage = sessionStorage.getItem("user");
   return userFromStorage && JSON.parse(userFromStorage);
 };
 
@@ -24,7 +24,7 @@ const AuthReducer: Reducer<IAuthState, AuthAction> = (state = initialAuthState, 
   switch (action.type) {
     case AuthActionTypes.LOG_IN:
       const { user, token } = action.payload;
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      sessionStorage.setItem("user", JSON.stringify(action.payload.user));
       Cookies.set("token", action.payload.token);
       return {
         ...state,
@@ -33,7 +33,7 @@ const AuthReducer: Reducer<IAuthState, AuthAction> = (state = initialAuthState, 
         isLoggedIn: true,
       };
     case AuthActionTypes.LOG_OUT:
-      localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
       Cookies.remove("token");
       return {
         ...state,
