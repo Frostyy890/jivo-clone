@@ -1,6 +1,6 @@
 import { useMatch, useResolvedPath } from "react-router-dom";
 import ProfileDropdown from "./ProfileDropdown";
-import {MessageSquare} from "lucide-react"
+import { MessageSquare } from "lucide-react";
 
 const Navbar = () => {
   const tabs = [
@@ -29,9 +29,9 @@ const Navbar = () => {
   return (
     <nav className="w-full fixed inset-x-0 top-0 z-50 bg-white border shadow-sm rounded-b-sm">
       <div className="flex items-center justify-between h-14 py-2 px-8">
-        <div className="flex items-center gap-8">
+        <div className="flex items-center font-medium gap-8">
           <a href="/" className="text-2xl font-semibold">
-          <MessageSquare className="w-6 h-6" />
+            <MessageSquare className="w-6 h-6" />
             {/* Jivo */}
           </a>
           {tabs.map(({ path, name }, index) => (

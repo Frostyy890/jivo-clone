@@ -4,7 +4,7 @@ import SignInPage from "@/pages/auth/SignIn";
 import SignUpPage from "@/pages/auth/SignUp";
 import Home from "@/pages/Home";
 import About from "./pages/About";
-import Chat from "./pages/Chat";
+import Chat from "./pages/chat";
 import { Toaster } from "./components/ui/toaster";
 import { useAuth } from "./store/auth/AuthContext";
 

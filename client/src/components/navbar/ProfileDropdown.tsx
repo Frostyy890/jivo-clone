@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
-import { User2, Settings, CreditCard, LogOut } from "lucide-react";
+import { User2, Settings, CreditCard, LogOut, CircleUser } from "lucide-react";
 import { useAuth } from "@/store/auth/AuthContext";
 import LogOutDialog from "./LogOutDialog";
 
@@ -24,20 +24,16 @@ const ProfileDropdown = () => {
         <DropdownMenuTrigger asChild>
           <Avatar className="w-9 h-9">
             <AvatarImage src="" alt="avatar" />
-            <AvatarFallback className="bg-black text-white">
-              {authState.user?.username[0].toUpperCase()}
+            <AvatarFallback className="font-medium">
+              <CircleUser className="h-6 w-6" />
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end">
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col gap-1">
-              <p className="text-base font-medium leading-none">
-                {authState.user?.username}
-              </p>
-              <p className="text-sm leading-none text-muted-foreground">
-                {authState.user?.email}
-              </p>
+              <p className="text-base font-medium leading-none">{authState.user?.username}</p>
+              <p className="text-sm leading-none text-muted-foreground">{authState.user?.email}</p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -57,10 +53,7 @@ const ProfileDropdown = () => {
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem
-              className={defaultTextStyle}
-              onClick={() => setOpen(true)}
-            >
+            <DropdownMenuItem className={defaultTextStyle} onClick={() => setOpen(true)}>
               <LogOut className={defaultIconStyle} />
               <span>Log out</span>
             </DropdownMenuItem>
