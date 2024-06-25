@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes as Router, Navigate } from "react-router-dom";
 import Layout from "@/pages/Layout";
 import SignInPage from "@/pages/auth/SignIn";
@@ -13,10 +12,10 @@ import "./App.css";
 
 function App() {
   const { authState } = useAuth();
-  const PrivateRoutes = React.useCallback(() => {
+  const PrivateRoutes = () => {
     if (!authState.isLoggedIn) return <Navigate to="/auth/sign-in" replace />;
     return <Layout />;
-  }, [authState.isLoggedIn]);
+  };
   return (
     <div className="app">
       <Router>
