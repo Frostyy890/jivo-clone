@@ -1,5 +1,6 @@
 import { useMatch, useResolvedPath } from "react-router-dom";
 import ProfileDropdown from "./ProfileDropdown";
+import {MessageSquare} from "lucide-react"
 
 const Navbar = () => {
   const tabs = [
@@ -27,11 +28,12 @@ const Navbar = () => {
 
   return (
     <nav className="w-full fixed inset-x-0 top-0 z-50 bg-white border shadow-sm rounded-b-sm">
-      <div className="flex items-center font-medium justify-between h-14 py-2 px-8">
-        <a href="/" className="text-xl font-semibold">
-          Jivo
-        </a>
-        <div className="hidden md:flex gap-8">
+      <div className="flex items-center justify-between h-14 py-2 px-8">
+        <div className="flex items-center gap-8">
+          <a href="/" className="text-2xl font-semibold">
+          <MessageSquare className="w-6 h-6" />
+            {/* Jivo */}
+          </a>
           {tabs.map(({ path, name }, index) => (
             <NavLink key={index} path={path} name={name} />
           ))}
@@ -48,9 +50,7 @@ function NavLink({ path, name }: { path: string; name: string }) {
   return (
     <a
       href={path}
-      className={`hover:underline transition-all duration-300 underline-offset-2 ${
-        isOnPage ? "underline" : ""
-      }`}
+      className={`${!isOnPage && "text-muted-foreground"} transition-colors hover:text-foreground`}
     >
       {name}
     </a>

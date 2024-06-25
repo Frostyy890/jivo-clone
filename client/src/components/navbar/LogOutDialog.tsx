@@ -36,8 +36,8 @@ const LogOutDialog = ({
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Wait!</AlertDialogTitle>
-          <AlertDialogDescription>Are you sure you want to log out?</AlertDialogDescription>
+          <AlertDialogTitle>Are you leaving?</AlertDialogTitle>
+          <AlertDialogDescription>Are you sure you want to log out? All unsaved changes will be lost.</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setOpen(false)}>Cancel</AlertDialogCancel>

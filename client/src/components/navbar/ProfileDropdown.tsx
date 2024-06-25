@@ -16,7 +16,7 @@ import LogOutDialog from "./LogOutDialog";
 const ProfileDropdown = () => {
   const { authState } = useAuth();
   const defaultIconStyle = "mr-2 h-5 w-5";
-  const defaultTextStyle = "font-medium";
+  const defaultTextStyle = "text-base";
   const [open, setOpen] = React.useState(false);
   return (
     <>
