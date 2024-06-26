@@ -10,11 +10,11 @@ import {
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { User2, Settings, CreditCard, LogOut } from "lucide-react";
-import { useAuth } from "@/store/auth/AuthContext";
+import { useAppSelector } from "@/redux/store";
 import LogOutDialog from "./LogOutDialog";
 
 const ProfileDropdown = () => {
-  const { authState } = useAuth();
+  const { user } = useAppSelector((state) => state.auth);
   const defaultIconStyle = "mr-2 h-5 w-5";
   const defaultTextStyle = "text-base";
   const [open, setOpen] = React.useState(false);
@@ -25,19 +25,15 @@ const ProfileDropdown = () => {
           <Avatar className="w-9 h-9">
             <AvatarImage src="" alt="avatar" />
             <AvatarFallback className="bg-black text-white">
-              {authState.user?.username[0].toUpperCase()}
+              {user?.username[0].toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end">
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col gap-1">
-              <p className="text-base font-medium leading-none">
-                {authState.user?.username}
-              </p>
-              <p className="text-sm leading-none text-muted-foreground">
-                {authState.user?.email}
-              </p>
+              <p className="text-base font-medium leading-none">{user?.username}</p>
+              <p className="text-sm leading-none text-muted-foreground">{user?.email}</p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -57,10 +53,7 @@ const ProfileDropdown = () => {
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem
-              className={defaultTextStyle}
-              onClick={() => setOpen(true)}
-            >
+            <DropdownMenuItem className={defaultTextStyle} onClick={() => setOpen(true)}>
               <LogOut className={defaultIconStyle} />
               <span>Log out</span>
             </DropdownMenuItem>

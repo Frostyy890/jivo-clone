@@ -1,20 +1,20 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/store/auth/AuthContext";
-import { IAuthData, useApi } from "@/hooks/api/useApi";
+import { useAppSelector, useAppDispatch } from "@/redux/store";
+import { authenticateAction, AuthActionEnum } from "@/redux/actions/AuthActions";
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Email must be valid" }),
   password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
 });
 
-type SignInFormData = z.infer<typeof signInSchema>;
+export type SignInFormData = z.infer<typeof signInSchema>;
 
 const SignInForm = () => {
   const form = useForm<SignInFormData>({
@@ -27,43 +27,21 @@ const SignInForm = () => {
   const {
     formState: { isDirty, isValid },
   } = form;
-  const [authData, setAuthData] = React.useState<IAuthData>();
-  const { dispatchLogIn } = useAuth();
-  const { apiRequest } = useApi();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { toast } = useToast();
+  const { success } = useAppSelector((state) => state.auth);
   const onSubmit = async (data: SignInFormData) => {
-    await apiRequest({
-      config: {
-        url: "/auth/login",
-        method: "POST",
-        data,
-      },
-      handleSuccessResponse: (data) => {
-        setAuthData(data);
-        toast({
-          title: "Success",
-          description: "Signed in successfully",
-          variant: "success",
-          duration: 3000,
-        });
-      },
-      handleErrorResponse: (data) =>
-        toast({
-          title: "Error",
-          description: data,
-          variant: "destructive",
-          duration: 3000,
-        }),
-    });
-  };
-  React.useEffect(() => {
-    if (authData && authData.success) {
-      dispatchLogIn({
-        token: authData.token,
-        user: authData.user,
+    await dispatch(authenticateAction({ action: AuthActionEnum.LOGIN, userInfo: data }));
+    if (success) {
+      navigate("/");
+      toast({
+        title: "Success",
+        description: "You have successfully logged in",
+        variant: "success",
       });
     }
-  }, [authData, dispatchLogIn]);
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

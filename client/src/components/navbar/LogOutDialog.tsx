@@ -1,5 +1,5 @@
-import { useApi } from "@/hooks/api/useApi";
-import { useAuth } from "@/store/auth/AuthContext";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { logoutAction } from "@/redux/actions/AuthActions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,26 +18,20 @@ const LogOutDialog = ({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { dispatchLogOut } = useAuth();
-  const { apiRequest } = useApi();
-  const { toast } = useToast();
+  const dispatch = useAppDispatch();
+  // const { error } = useAppSelector((state) => state.auth);
+  // const { toast } = useToast();
   const handleLogout = async () => {
-    await apiRequest({
-      config: {
-        url: "/auth/logout",
-        method: "POST",
-      },
-      handleSuccessResponse: dispatchLogOut,
-      handleErrorResponse: (data) =>
-        toast({ title: "Error", description: data, variant: "destructive", duration: 3000 }),
-    });
+    dispatch(logoutAction());
   };
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you leaving?</AlertDialogTitle>
-          <AlertDialogDescription>Are you sure you want to log out? All unsaved changes will be lost.</AlertDialogDescription>
+          <AlertDialogDescription>
+            Are you sure you want to log out? All unsaved changes will be lost.
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setOpen(false)}>Cancel</AlertDialogCancel>

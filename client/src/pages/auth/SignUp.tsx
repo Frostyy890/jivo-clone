@@ -17,7 +17,7 @@ const SignUpPage = () => {
             <p className="text-muted-foreground">Enter your email below to create an account</p>
           </div>
 
-          <SignUpForm />
+          {/* <SignUpForm /> */}
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">

@@ -6,14 +6,14 @@ import Home from "@/pages/Home";
 import About from "./pages/About";
 import Chat from "./pages/Chat";
 import { Toaster } from "./components/ui/toaster";
-import { useAuth } from "./store/auth/AuthContext";
+import { useAppSelector } from "./redux/store";
 
 import "./App.css";
 
 function App() {
-  const { authState } = useAuth();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const PrivateRoutes = () => {
-    if (!authState.isLoggedIn) return <Navigate to="/auth/sign-in" replace />;
+    if (!isAuthenticated) return <Navigate to="/auth/sign-in" replace />;
     return <Layout />;
   };
   return (
