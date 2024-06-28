@@ -1,47 +1,59 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { useApi } from "@/hooks/api/useApi";
+import axios from "axios";
 import { SignInFormData } from "@/pages/auth/components/SignInForm";
 import { SignUpFormData } from "@/pages/auth/components/SignUpForm";
-import Cookies from "js-cookie";
 
-export enum AuthActionEnum {
-  LOGIN = "login",
-  REGISTER = "register",
-}
+export const baseURL = import.meta.env.VITE_BASE_URL || "";
+const axiosDefaults = { baseURL };
+const httpRequest = axios.create(axiosDefaults);
 
-export const authenticateAction = createAsyncThunk(
-  "auth/authenticate",
-  async (
-    data: { action: AuthActionEnum; userInfo: SignInFormData | SignUpFormData },
-    { rejectWithValue }
-  ) => {
-    const { apiRequest, error } = useApi();
-    const res = await apiRequest({
-      url: `/auth/${data.action}`,
+export const registerAction = createAsyncThunk(
+  "auth/register",
+  async (data: SignUpFormData, { rejectWithValue }) => {
+    return await httpRequest({
+      url: "/auth/register",
       method: "POST",
-      data: data.userInfo,
-    });
-    if (error) {
-      return rejectWithValue(error);
-    }
-
-    Cookies.set("token", res?.data?.token);
-    sessionStorage.setItem("user", JSON.stringify(res?.data?.user));
-
-    return res?.data;
+      data,
+    })
+      .then((res) => res.data)
+      .catch((error: any) => {
+        console.error(error);
+        if (error?.response && error.response?.data?.errors) {
+          return rejectWithValue(error.response.data.errors[0].message);
+        }
+        return rejectWithValue(error?.message);
+      });
+  }
+);
+export const loginAction = createAsyncThunk(
+  "auth/login",
+  async (data: SignInFormData, { rejectWithValue }) => {
+    return await httpRequest({
+      url: "/auth/login",
+      method: "POST",
+      data,
+    })
+      .then((res) => res.data)
+      .catch((error: any) => {
+        if (error?.response && error.response?.data?.errors) {
+          return rejectWithValue(error.response.data.errors[0].message);
+        }
+        return rejectWithValue(error?.message);
+      });
   }
 );
 
-export const logoutAction = createAsyncThunk("auth/logout", async () => {
-  const { apiRequest, error } = useApi();
-  const res = await apiRequest({
-    url: "/auth/logout",
-    method: "POST",
-  });
-  if (error) return error;
-
-  if (res?.status === 204) {
-    Cookies.remove("token");
-    sessionStorage.removeItem("user");
+export const logoutAction = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await httpRequest({ url: "/auth/logout", method: "POST" });
+    } catch (error: any) {
+      console.error(error);
+      if (error?.response && error.response?.data?.errors) {
+        return rejectWithValue(error.response.data.errors[0].message);
+      }
+      return rejectWithValue(error?.message);
+    }
   }
-});
+);

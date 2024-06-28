@@ -1,17 +1,26 @@
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAppSelector, useAppDispatch } from "@/redux/store";
-import { authenticateAction, AuthActionEnum } from "@/redux/actions/AuthActions";
+import { loginAction } from "@/redux/actions/AuthActions";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Email must be valid" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
 });
 
 export type SignInFormData = z.infer<typeof signInSchema>;
@@ -30,18 +39,29 @@ const SignInForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { success } = useAppSelector((state) => state.auth);
-  const onSubmit = async (data: SignInFormData) => {
-    await dispatch(authenticateAction({ action: AuthActionEnum.LOGIN, userInfo: data }));
-    if (success) {
-      navigate("/");
+  const { isAuthenticated, error } = useAppSelector((state) => state.auth);
+  const onSubmit = (data: SignInFormData) => {
+    dispatch(loginAction(data));
+  };
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
       toast({
-        title: "Success",
-        description: "You have successfully logged in",
+        title: "Login Successful",
+        description: "Welcome back!",
         variant: "success",
       });
+      navigate("/");
     }
-  };
+    if (error) {
+      toast({
+        title: "Error",
+        description: error,
+        variant: "destructive",
+      });
+    }
+  }, [isAuthenticated, error]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -64,7 +84,11 @@ const SignInForm = () => {
             )}
           ></FormField>
         ))}
-        <Button className="w-full mt-1 font-semibold" type="submit" disabled={!isDirty || !isValid}>
+        <Button
+          className="w-full mt-1 font-semibold"
+          type="submit"
+          disabled={!isDirty || !isValid}
+        >
           Login
         </Button>
       </form>

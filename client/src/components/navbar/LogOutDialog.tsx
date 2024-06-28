@@ -1,4 +1,5 @@
-import { useAppDispatch, useAppSelector } from "@/redux/store";
+import React from "react";
+import { useAppDispatch } from "@/redux/store";
 import { logoutAction } from "@/redux/actions/AuthActions";
 import {
   AlertDialog,
@@ -10,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../ui/alert-dialog";
-import { useToast } from "../ui/use-toast";
+
 const LogOutDialog = ({
   open,
   setOpen,
@@ -19,7 +20,6 @@ const LogOutDialog = ({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const dispatch = useAppDispatch();
-  // const { error } = useAppSelector((state) => state.auth);
   // const { toast } = useToast();
   const handleLogout = async () => {
     dispatch(logoutAction());
@@ -34,8 +34,13 @@ const LogOutDialog = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setOpen(false)}>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-red-500 hover:bg-red-600" onClick={handleLogout}>
+          <AlertDialogCancel onClick={() => setOpen(false)}>
+            Cancel
+          </AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-red-500 hover:bg-red-600"
+            onClick={handleLogout}
+          >
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -7,24 +7,31 @@ const SignUpPage = () => {
       <div className="w-full h-full bg-primary"></div>
       <div className="w-full relative h-full flex items-center justify-center">
         <div className="absolute top-4 right-4 font-semibold">
-          <a href="/auth/sign-in" className={buttonVariants({ variant: "ghost" })}>
+          <a
+            href="/auth/sign-in"
+            className={buttonVariants({ variant: "ghost" })}
+          >
             Login
           </a>
         </div>
         <div className="w-[350px] flex flex-col gap-4 text-center">
           <div className="flex flex-col gap-2">
             <h1 className="font-semibold text-2xl">Create an account</h1>
-            <p className="text-muted-foreground">Enter your email below to create an account</p>
+            <p className="text-muted-foreground">
+              Enter your email below to create an account
+            </p>
           </div>
 
-          {/* <SignUpForm /> */}
+          <SignUpForm />
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t"></span>
             </div>
             <div className="relative flex justify-center text-sm uppercase">
-              <span className="px-2 bg-background text-muted-foreground">Or continue with</span>
+              <span className="px-2 bg-background text-muted-foreground">
+                Or continue with
+              </span>
             </div>
           </div>
 
@@ -40,11 +47,17 @@ const SignUpPage = () => {
 
           <span className="text-muted-foreground">
             By clicking continue, you agree to our{" "}
-            <a href="/terms" className=" outline-none underline underline-offset-2">
+            <a
+              href="/terms"
+              className=" outline-none underline underline-offset-2"
+            >
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="/privacy" className="outline-none underline underline-offset-2">
+            <a
+              href="/privacy"
+              className="outline-none underline underline-offset-2"
+            >
               Privacy Policy
             </a>
           </span>
@@ -67,7 +80,11 @@ export function GitHubIconSvg() {
 
 export function GoogleIconSvg() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 186.69 190.5" className="mr-2 h-4 w-4">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 186.69 190.5"
+      className="mr-2 h-4 w-4"
+    >
       <path
         fill="#4285f4"
         d="M95.25 77.932v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z"

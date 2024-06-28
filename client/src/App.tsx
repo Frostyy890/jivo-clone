@@ -1,4 +1,4 @@
-import { Route, Routes as Router, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Layout from "@/pages/Layout";
 import SignInPage from "@/pages/auth/SignIn";
 import SignUpPage from "@/pages/auth/SignUp";
@@ -11,23 +11,26 @@ import { useAppSelector } from "./redux/store";
 import "./App.css";
 
 function App() {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const PrivateRoutes = () => {
-    if (!isAuthenticated) return <Navigate to="/auth/sign-in" replace />;
-    return <Layout />;
+    return isAuthenticated ? (
+      <Layout />
+    ) : (
+      <Navigate to="/auth/sign-in" replace />
+    );
   };
   return (
     <div className="app">
-      <Router>
-        <Route path="/auth/sign-in" element={<SignInPage />} />
-        <Route path="/auth/sign-up" element={<SignUpPage />} />
+      <Routes>
         <Route element={<PrivateRoutes />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
-      </Router>
+        <Route path="/auth/sign-in" element={<SignInPage />} />
+        <Route path="/auth/sign-up" element={<SignUpPage />} />
+      </Routes>
       <Toaster />
     </div>
   );
